@@ -1,0 +1,137 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --fecemuz-primary: #0b1e3a;
+  --fecemuz-accent: #f59e0b;
+  --fecemuz-bg: #f8fafc;
+  --fecemuz-text: #0f172a;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--fecemuz-bg);
+  color: var(--fecemuz-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* =========================
+   Base tipografía + UI
+   ========================= */
+@layer base {
+  html {
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply tracking-tight text-slate-900;
+  }
+
+  p {
+    @apply leading-relaxed;
+  }
+
+  /* ✅ Links: por defecto SIN subrayado (para navbar/footer) */
+  a {
+    @apply text-slate-900 transition;
+  }
+  a:hover {
+    @apply opacity-90;
+  }
+
+  /* ✅ Links dentro de texto: sí subrayado (solo donde importa) */
+  p a,
+  li a {
+    @apply underline underline-offset-4;
+  }
+
+  /* ✅ Focus uniforme (teclado) */
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.35);
+    border-radius: 12px;
+  }
+
+  ::selection {
+    background: rgba(245, 158, 11, 0.25);
+  }
+}
+
+/* =========================
+   Component-like utilities
+   ========================= */
+@layer components {
+  /* Espaciado vertical GLOBAL para páginas */
+  .page-y {
+    @apply py-10;
+  }
+  @media (min-width: 768px) {
+    .page-y {
+      @apply py-14;
+    }
+  }
+
+  .hero-bg {
+    background:
+      radial-gradient(900px 420px at 20% 0%, rgba(245, 158, 11, 0.12), transparent 60%),
+      radial-gradient(900px 420px at 85% 10%, rgba(15, 23, 42, 0.07), transparent 55%),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.55));
+  }
+
+  .readable {
+    @apply max-w-4xl;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-extrabold shadow-sm transition;
+  }
+  .btn-primary {
+    @apply bg-[color:var(--fecemuz-accent)] text-white hover:opacity-90;
+  }
+  .btn-secondary {
+    @apply border border-slate-300 bg-white text-slate-900 hover:bg-slate-50;
+  }
+  .btn-tertiary {
+    @apply border border-slate-200 bg-slate-50 text-slate-900 hover:bg-slate-100;
+  }
+
+  .chip {
+    @apply inline-flex items-center rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium text-slate-700;
+  }
+
+  .card {
+    @apply rounded-3xl border border-slate-200 bg-white shadow-sm;
+  }
+  .card-hover {
+    @apply transition-all hover:-translate-y-0.5 hover:border-slate-900/10 hover:shadow-md;
+  }
+
+  .text-justify {
+    @apply text-left;
+  }
+  @media (min-width: 768px) {
+    .text-justify {
+      text-align: justify;
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
