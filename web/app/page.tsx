@@ -13,6 +13,7 @@ export default function HomePage() {
   return (
     <main className="page-y">
       <Container>
+        {/* HERO */}
         <Card className="p-6 sm:p-8 md:p-10">
           <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-10">
             {/* Izquierda */}
@@ -119,11 +120,93 @@ export default function HomePage() {
             </aside>
           </div>
         </Card>
+
+        {/* SECCIÓN DESTACADA: FECEMUZ Investing Ranking */}
+        <Card className="mt-6 p-6 sm:p-8 md:p-10">
+          <div className="grid items-start gap-8 lg:grid-cols-12 lg:gap-10">
+            <div className="lg:col-span-7">
+              <div className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-semibold text-primary">
+                <span className="inline-block h-2 w-2 rounded-full bg-accent" />
+                Competición
+              </div>
+
+              <h2 className="mt-4 text-2xl font-extrabold tracking-tight text-primary sm:text-3xl">
+                FECEMUZ Investing Ranking
+              </h2>
+
+              <p className="mt-4 text-justify text-base leading-relaxed text-slate-600">
+                Ranking anual de rentabilidad entre clubes (cada club gestiona su
+                propia cuenta en IBKR). Publicamos resultados de forma clara y
+                comparable.
+              </p>
+
+              <div className="mt-6 grid gap-3 sm:flex sm:flex-wrap">
+                <Link
+                  href="/fecemuz-investing-ranking"
+                  className="btn btn-primary w-full sm:w-auto"
+                >
+                  Ver ranking
+                </Link>
+
+                <Link
+                  href="/contacto"
+                  className="btn btn-secondary w-full sm:w-auto"
+                >
+                  Quiero participar
+                </Link>
+              </div>
+
+              <div className="mt-7 grid gap-3 sm:mt-8 sm:grid-cols-3">
+                <Stat label="Periodo" value="Anual (YTD)" />
+                <Stat label="Actualización" value="Automática" />
+                <Stat label="Datos" value="IBKR reporting" />
+              </div>
+            </div>
+
+            <aside className="lg:col-span-5">
+              <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div className="inline-flex items-center gap-2 rounded-full bg-slate-900/5 px-3 py-1 text-xs font-extrabold text-slate-700">
+                  <span className="h-2 w-2 rounded-full bg-accent" />
+                  Cómo funciona
+                </div>
+
+                <h3 className="mt-4 text-lg font-extrabold text-slate-900">
+                  Reglas simples, presentación clara
+                </h3>
+
+                <ul className="mt-4 space-y-3 text-sm text-slate-700">
+                  <li className="flex gap-3">
+                    <Dot />
+                    <span>
+                      Cada club es <span className="font-semibold">responsable</span> de su propia cuenta.
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <Dot />
+                    <span>
+                      La web muestra un <span className="font-semibold">ranking</span> de rentabilidad anual.
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <Dot />
+                    <span>
+                      Transparencia: fecha de actualización y estado de datos por club.
+                    </span>
+                  </li>
+                </ul>
+
+                <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                  <p className="text-xs font-semibold text-slate-500">Nota</p>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-700">
+                    Este ranking no constituye recomendación de inversión. La
+                    inversión conlleva riesgo.
+                  </p>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </Card>
       </Container>
     </main>
   );
 }
-
-
-
-
