@@ -21,19 +21,27 @@ function formatPct(v: number | null) {
   return `${v.toFixed(2)}%`;
 }
 
+function isEnabled() {
+  // ✅ 1) En producción: siempre oculto (cero riesgo de "Application error")
+  if (process.env.VERCEL_ENV === "production") return false;
+
+  // ✅ 2) En local/preview: se controla con flag
+  return process.env.RANKING_ENABLED?.trim().toLowerCase() === "true";
+}
+
 export default async function FecemuzInvestingRankingPage({
   searchParams,
 }: {
   searchParams?: { year?: string };
 }) {
-  // 🔒 INTERRUPTOR (robusto):
-  // - Si NO existe RANKING_ENABLED en producción → 404
-  // - Solo se muestra si es exactamente "true"
-  const enabled = process.env.RANKING_ENABLED?.trim() === "true";
-  if (!enabled) notFound();
+  // 🔒 Guard clause: lo primero
+  if (!isEnabled()) notFound();
 
   const year = Number(searchParams?.year || new Date().getFullYear());
-  const base = process.env.RANKING_API_BASE_URL || "http://127.0.0.1:8000";
+
+  // ✅ En dev/preview, exigimos base URL explícita (evita fallos silenciosos)
+  const base = process.env.RANKING_API_BASE_URL?.trim();
+  if (!base) notFound();
 
   const res = await fetch(`${base}/ranking?year=${year}`, {
     cache: "no-store",
