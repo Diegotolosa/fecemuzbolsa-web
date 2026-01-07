@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { unstable_noStore as noStore } from "next/cache";
 import Container from "../../components/container";
 import { supabase } from "@/lib/supabaseClient";
 import { PageHeader, Card, CardTitle, CardSubtitle } from "../../components/ui";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "Informes semanales",
@@ -47,7 +49,10 @@ async function listPdfPaths(path: string): Promise<string[]> {
     try {
       const { data: inner, error: innerErr } = await supabase.storage
         .from("weekly-briefing")
-        .list(folderPath, { limit: 100, sortBy: { column: "name", order: "desc" } });
+        .list(folderPath, {
+          limit: 100,
+          sortBy: { column: "name", order: "desc" },
+        });
 
       if (innerErr) continue;
 
@@ -66,6 +71,9 @@ async function listPdfPaths(path: string): Promise<string[]> {
 }
 
 export default async function InformesSemanalesPage() {
+  // Evita caché de Next en esta ruta (SSR en cada request)
+  noStore();
+
   let errorMsg: string | null = null;
   let pdfPaths: string[] = [];
 
