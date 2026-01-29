@@ -10,7 +10,7 @@ const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.
 
 // 2. Tus credenciales reales extraídas de las capturas
 const IBKR_TOKEN = "524464598330845886804576"; //
-const QUERY_ID = "1350675"; //
+const QUERY_ID = "1384579"; //
 
 async function actualizarCartera() {
   console.log("📡 Conectando con Interactive Brokers (FECEMUZ_Daily)...");
