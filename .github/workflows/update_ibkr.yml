@@ -1,0 +1,45 @@
+# .github/workflows/update_ibkr.yml
+name: Actualizar Cartera IBKR
+
+on:
+  push:
+    paths:
+      - 'ibkr_raw.csv'      # Solo se ejecuta si se sube o cambia el CSV
+  workflow_dispatch:       # Permite ejecutar manualmente desde GitHub
+
+jobs:
+  update-portfolio:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1️⃣ Checkout del repositorio
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    # 2️⃣ Configurar Node.js
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20
+
+    # 3️⃣ Instalar dependencias
+    - name: Install dependencies
+      run: npm install
+
+    # 4️⃣ Configurar variables de entorno
+    - name: Set environment variables
+      run: |
+        echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> $GITHUB_ENV
+        echo "SUPABASE_SERVICE_ROLE_KEY=${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" >> $GITHUB_ENV
+
+    # 5️⃣ Ejecutar transformación de CSV a JSON
+    - name: Transformar CSV
+      run: node transformData.js
+
+    # 6️⃣ Insertar datos en Supabase
+    - name: Insertar en Supabase
+      run: node insertALL.js
+
+    # 7️⃣ Confirmación final
+    - name: Done
+      run: echo "✅ Flujo completo ejecutado correctamente."

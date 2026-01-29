@@ -38,8 +38,7 @@ async function listPdfPaths(path: string): Promise<string[]> {
     .filter((i) => isPdf(i.name))
     .map((i) => (path ? `${path}/${i.name}` : i.name));
 
-  // Detecta “carpetas” (en Supabase suelen venir como items sin .pdf y sin extensión)
-  // y lista 1 nivel dentro para encontrar PDFs.
+  // Detecta “carpetas” y lista 1 nivel dentro para encontrar PDFs.
   const folderCandidates = items
     .filter((i) => !isPdf(i.name))
     .map((i) => (path ? `${path}/${i.name}` : i.name));
@@ -144,61 +143,71 @@ export default async function InformesSemanalesPage() {
         )}
 
         {!errorMsg && pdfPaths.length > 0 && (
-          <Card>
-            <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <div className="inline-flex items-center rounded-full bg-slate-900/5 px-3 py-1 text-xs font-extrabold text-slate-700">
-                  Listado
+          <>
+            {/* DEBUG TEMPORAL: muestra exactamente lo que devuelve el listado */}
+            <Card className="mb-6">
+              <CardTitle>DEBUG (temporal)</CardTitle>
+              <pre className="mt-3 overflow-auto rounded-xl bg-slate-950 p-4 text-xs text-white">
+                {JSON.stringify(pdfPaths, null, 2)}
+              </pre>
+            </Card>
+
+            <Card>
+              <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <div className="inline-flex items-center rounded-full bg-slate-900/5 px-3 py-1 text-xs font-extrabold text-slate-700">
+                    Listado
+                  </div>
+                  <CardTitle className="mt-3">Listado de informes</CardTitle>
                 </div>
-                <CardTitle className="mt-3">Listado de informes</CardTitle>
+
+                <span className="chip">{pdfPaths.length} documento(s)</span>
               </div>
 
-              <span className="chip">{pdfPaths.length} documento(s)</span>
-            </div>
+              <ul className="space-y-3">
+                {pdfPaths.map((path) => {
+                  const { data: publicUrl } = supabase.storage
+                    .from("weekly-briefing")
+                    .getPublicUrl(path);
 
-            <ul className="space-y-3">
-              {pdfPaths.map((path) => {
-                const { data: publicUrl } = supabase.storage
-                  .from("weekly-briefing")
-                  .getPublicUrl(path);
+                  const filename = path.split("/").pop() ?? path;
 
-                const filename = path.split("/").pop() ?? path;
-
-                return (
-                  <li
-                    key={path}
-                    className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 transition hover:-translate-y-0.5 hover:border-primary/20 hover:bg-white hover:shadow-sm"
-                  >
-                    <div className="flex min-w-[260px] items-start gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white">
-                        <span className="text-sm font-extrabold text-slate-900">
-                          PDF
-                        </span>
-                      </div>
-
-                      <div>
-                        <p className="font-extrabold text-slate-900">
-                          {filename}
-                        </p>
-                        <p className="mt-1 text-xs font-semibold text-slate-500">
-                          Ruta: {path}
-                        </p>
-                      </div>
-                    </div>
-
-                    <a
-                      href={publicUrl.publicUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="btn btn-primary px-5 py-2.5"
+                  return (
+                    <li
+                      key={path}
+                      className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 transition hover:-translate-y-0.5 hover:border-primary/20 hover:bg-white hover:shadow-sm"
                     >
-                      Descargar
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
-          </Card>
+                      <div className="flex min-w-[260px] items-start gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white">
+                          <span className="text-sm font-extrabold text-slate-900">
+                            PDF
+                          </span>
+                        </div>
+
+                        <div>
+                          <p className="font-extrabold text-slate-900">
+                            {filename}
+                          </p>
+                          <p className="mt-1 text-xs font-semibold text-slate-500">
+                            Ruta: {path}
+                          </p>
+                        </div>
+                      </div>
+
+                      <a
+                        href={publicUrl.publicUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="btn btn-primary px-5 py-2.5"
+                      >
+                        Descargar
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+            </Card>
+          </>
         )}
 
         <section className="mt-10 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
